@@ -1,0 +1,17 @@
+{
+  "date": "2026-04-15",
+  "title": "first black box proof",
+  "repo": "jsonwisdom/signal-multisig-zora",
+  "ens": [
+    "jaywisdom.eth",
+    "jaywisdom.base.eth"
+  ],
+  "x_handles": [
+    "@jaywisdom",
+    "@qslices"
+  ],
+  "contract": "0x694cE46C64D9D1a5e9376A9feBcF85Ec05D72e9F",
+  "statement": "Initial high-intent proof anchor for Jay Math / Zero Trust protocol.",
+  "artifacts": [],
+  "notes": "Created from connected GitHub surface to establish the first public anchor."
+}
