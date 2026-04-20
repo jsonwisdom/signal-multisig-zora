@@ -1,0 +1,16 @@
+{
+  "receipt_id": "receipt-005-cost-lock-active",
+  "timestamp_utc": "2026-04-20T22:20:00Z",
+  "state": "cost_lock_active",
+  "status": "ENS_DEFERRED",
+  "previous_receipt": "6cdc7306d08c6a99e545049ac2b5cb6a02b72f49",
+  "anchors": {
+    "watcher_cid": "bafkreiejglszu46zbawpbq7sd4btqb2z3zpbvbezlfifgaijb2o5rv2xky",
+    "proof_cid": "bafkreic7w3r5rhwq4p52trzfi77qcyoidbnlknxltlihgnjiffqa4avidy",
+    "base_tx": "0xf8da7f03adfaab0e364789576f3bb146d15f5c9253d60c1b472af18e76bf6e60",
+    "repo": "jsonwisdom/signal-multisig-zora"
+  },
+  "strategy": "Vertical build on Git/IPFS layers while deferring ENS for capital efficiency.",
+  "notes": "The proof remains publicly verifiable through Git, IPFS, and Base. ENS is postponed due to cost constraints and is not required for cryptographic integrity.",
+  "burn_rate": "0.00"
+}
