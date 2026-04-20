@@ -1,0 +1,19 @@
+{
+  "receipt_id": "2026-04-20-second-proof",
+  "timestamp_utc": "2026-04-20T00:00:00Z",
+  "previous": {
+    "commit_hash": "2747accc2dc1108dfe9aa13836f257c170d4d871",
+    "artifact_sha256": "c046a659d3b37214058c68e57828328d46123a28",
+    "file_path": "receipts/2026-04-15-first-proof.json",
+    "repo": "jsonwisdom/signal-multisig-zora"
+  },
+  "new_surface": {
+    "type": "ipfs_cid_pending",
+    "cid": "PENDING_USER_RETURN",
+    "source_artifact": "Receipt #002 JSON",
+    "verification_url": "ipfs://PENDING_USER_RETURN"
+  },
+  "purpose": "Create the second linked proof artifact and bind Receipt #001 to a new public content-addressed surface.",
+  "notes": "This artifact is intentionally created before chain anchoring. It proves continuity of publication. Chain anchor and ENS pointer can follow as later receipts.",
+  "67ACTNOW_status": "locked_pending_network_signal"
+}
