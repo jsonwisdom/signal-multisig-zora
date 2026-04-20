@@ -1,0 +1,22 @@
+{
+  "receipt_id": "receipt-003-public-watcher-live",
+  "timestamp_utc": "2026-04-20T22:05:00Z",
+  "previous": {
+    "receipt_002_commit": "a91081e671951eeee377cf2149abb1ae4d865325",
+    "receipt_001_commit": "2747accc2dc1108dfe9aa13836f257c170d4d871",
+    "receipt_001_artifact_sha256": "c046a659d3b37214058c68e57828328d46123a28"
+  },
+  "public_watcher": {
+    "path": "site/spine-visualizer.html",
+    "visualizer_commit": "6bd0aa13e8cbaac4374c57792c0b0962daa615da",
+    "state": "public_verifier_live"
+  },
+  "anchors": {
+    "cid": "bafkreic7w3r5rhwq4p52trzfi77qcyoidbnlknxltlihgnjiffqa4avidy",
+    "base_tx": "0xf8da7f03adfaab0e364789576f3bb146d15f5c9253d60c1b472af18e76bf6e60",
+    "repo": "jsonwisdom/signal-multisig-zora"
+  },
+  "purpose": "Record activation of the public watcher surface and preserve continuity from Receipt #002 without requiring calldata hardening.",
+  "notes": "Public legibility is now prioritized over mobile-hostile calldata binding. Git, IPFS, and Base existence remain the active proof surfaces.",
+  "67ACTNOW_status": "locked_pending_network_signal"
+}
