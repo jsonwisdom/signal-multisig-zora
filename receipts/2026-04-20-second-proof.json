@@ -8,12 +8,13 @@
     "repo": "jsonwisdom/signal-multisig-zora"
   },
   "new_surface": {
-    "type": "ipfs_cid",
+    "type": "ipfs_cid_and_base_tx",
     "cid": "bafkreic7w3r5rhwq4p52trzfi77qcyoidbnlknxltlihgnjiffqa4avidy",
-    "source_artifact": "Receipt #002 JSON",
-    "verification_url": "ipfs://bafkreic7w3r5rhwq4p52trzfi77qcyoidbnlknxltlihgnjiffqa4avidy"
+    "verification_url": "ipfs://bafkreic7w3r5rhwq4p52trzfi77qcyoidbnlknxltlihgnjiffqa4avidy",
+    "tx_hash": "0xf8da7f03adfaab0e364789576f3bb146d15f5c9253d60c1b472af18e76bf6e60",
+    "network": "base"
   },
-  "purpose": "Create the second linked proof artifact and bind Receipt #001 to a new public content-addressed surface.",
-  "notes": "This artifact is intentionally created before chain anchoring. It proves continuity of publication. Chain anchor and ENS pointer can follow as later receipts.",
+  "purpose": "Create the second linked proof artifact and bind Receipt #001 to new public IPFS and Base surfaces.",
+  "notes": "Receipt #002 now records both the returned IPFS CID and the Base self-transfer hash. Additional explorer-derived fields can be added in a later receipt if needed.",
   "67ACTNOW_status": "locked_pending_network_signal"
 }
