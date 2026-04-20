@@ -8,10 +8,10 @@
     "repo": "jsonwisdom/signal-multisig-zora"
   },
   "new_surface": {
-    "type": "ipfs_cid_pending",
-    "cid": "PENDING_USER_RETURN",
+    "type": "ipfs_cid",
+    "cid": "bafkreic7w3r5rhwq4p52trzfi77qcyoidbnlknxltlihgnjiffqa4avidy",
     "source_artifact": "Receipt #002 JSON",
-    "verification_url": "ipfs://PENDING_USER_RETURN"
+    "verification_url": "ipfs://bafkreic7w3r5rhwq4p52trzfi77qcyoidbnlknxltlihgnjiffqa4avidy"
   },
   "purpose": "Create the second linked proof artifact and bind Receipt #001 to a new public content-addressed surface.",
   "notes": "This artifact is intentionally created before chain anchoring. It proves continuity of publication. Chain anchor and ENS pointer can follow as later receipts.",
