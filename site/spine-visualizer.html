@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Spine Visualizer</title>
+  <style>
+    :root {
+      --bg: #0a0f14;
+      --panel: #111821;
+      --text: #e6edf3;
+      --muted: #8b9bab;
+      --green: #00ff88;
+      --red: #ff5f56;
+      --amber: #ffbd2e;
+      --blue: #4ea1ff;
+      --border: #1f2a37;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: linear-gradient(180deg, #081018 0%, #0a0f14 100%);
+      color: var(--text);
+      padding: 24px;
+    }
+    .wrap { max-width: 980px; margin: 0 auto; }
+    h1 { margin: 0 0 8px; font-size: 32px; }
+    p.lead { margin: 0 0 24px; color: var(--muted); }
+    .hero {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    .status-banner {
+      margin-top: 12px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+    .ok { background: rgba(0,255,136,.08); color: var(--green); border: 1px solid rgba(0,255,136,.25); }
+    .warn { background: rgba(255,189,46,.08); color: var(--amber); border: 1px solid rgba(255,189,46,.25); }
+    .bad { background: rgba(255,95,86,.08); color: var(--red); border: 1px solid rgba(255,95,86,.25); }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+    }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+    }
+    .row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+    .led {
+      width: 16px; height: 16px; border-radius: 999px; flex: 0 0 16px;
+      box-shadow: 0 0 0 2px rgba(255,255,255,0.04), 0 0 20px currentColor;
+    }
+    .led.green { color: var(--green); background: var(--green); }
+    .led.red { color: var(--red); background: var(--red); }
+    .led.amber { color: var(--amber); background: var(--amber); }
+    .card h2 { font-size: 18px; margin: 0; }
+    .kv { font-size: 13px; color: var(--muted); line-height: 1.5; word-break: break-all; }
+    .kv b { color: var(--text); }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
+    .actions { margin-top: 12px; display: flex; gap: 10px; flex-wrap: wrap; }
+    a.btn {
+      text-decoration: none;
+      color: var(--text);
+      border: 1px solid var(--border);
+      background: #0d141c;
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 14px;
+    }
+    .log {
+      margin-top: 20px;
+      background: #071018;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+    }
+    .log pre {
+      margin: 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: #b6c2cf;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero">
+      <h1>THE_SPINE_VISUALIZER</h1>
+      <p class="lead">Browser-rendered proof surface for Git, IPFS, and Base anchors.</p>
+      <div id="overall" class="status-banner warn">Checking proof surfaces…</div>
+    </div>
+
+    <div class="grid">
+      <section class="card" id="git-card">
+        <div class="row"><div id="git-led" class="led amber"></div><h2>Git Anchor</h2></div>
+        <div class="kv mono"><b>Commit:</b> <span id="git-hash"></span></div>
+        <div class="kv mono"><b>Receipt:</b> receipts/2026-04-20-second-proof.json</div>
+        <div class="kv" id="git-msg">Checking commit and file surface…</div>
+        <div class="actions">
+          <a class="btn" id="git-commit-link" target="_blank" rel="noreferrer">Open commit</a>
+          <a class="btn" id="git-file-link" target="_blank" rel="noreferrer">Open file</a>
+        </div>
+      </section>
+
+      <section class="card" id="ipfs-card">
+        <div class="row"><div id="ipfs-led" class="led amber"></div><h2>IPFS Anchor</h2></div>
+        <div class="kv mono"><b>CID:</b> <span id="cid"></span></div>
+        <div class="kv" id="ipfs-msg">Checking gateway availability and receipt content…</div>
+        <div class="actions">
+          <a class="btn" id="ipfs-link" target="_blank" rel="noreferrer">Open IPFS</a>
+        </div>
+      </section>
+
+      <section class="card" id="base-card">
+        <div class="row"><div id="base-led" class="led amber"></div><h2>Base Anchor</h2></div>
+        <div class="kv mono"><b>TX:</b> <span id="tx-hash"></span></div>
+        <div class="kv" id="base-msg">Base proof is recorded as a public explorer surface in Receipt #002.</div>
+        <div class="actions">
+          <a class="btn" id="base-link" target="_blank" rel="noreferrer">Open on BaseScan</a>
+        </div>
+      </section>
+    </div>
+
+    <section class="log">
+      <pre id="log">Booting…</pre>
+    </section>
+  </div>
+
+  <script>
+    const REPO = "jsonwisdom/signal-multisig-zora";
+    const GIT_HASH = "a91081e671951eeee377cf2149abb1ae4d865325";
+    const PREV_HASH = "2747accc2dc1108dfe9aa13836f257c170d4d871";
+    const PREV_ARTIFACT_SHA = "c046a659d3b37214058c68e57828328d46123a28";
+    const CID = "bafkreic7w3r5rhwq4p52trzfi77qcyoidbnlknxltlihgnjiffqa4avidy";
+    const TX_HASH = "0xf8da7f03adfaab0e364789576f3bb146d15f5c9253d60c1b472af18e76bf6e60";
+    const FILE_PATH = "receipts/2026-04-20-second-proof.json";
+    const COMMIT_URL = `https://github.com/${REPO}/commit/${GIT_HASH}`;
+    const FILE_URL = `https://github.com/${REPO}/blob/${GIT_HASH}/${FILE_PATH}`;
+    const RAW_URL = `https://raw.githubusercontent.com/${REPO}/${GIT_HASH}/${FILE_PATH}`;
+    const IPFS_URL = `https://dweb.link/ipfs/${CID}`;
+    const BASE_URL = `https://basescan.org/tx/${TX_HASH}`;
+
+    const overall = document.getElementById('overall');
+    const logEl = document.getElementById('log');
+    const gitLed = document.getElementById('git-led');
+    const ipfsLed = document.getElementById('ipfs-led');
+    const baseLed = document.getElementById('base-led');
+    const gitMsg = document.getElementById('git-msg');
+    const ipfsMsg = document.getElementById('ipfs-msg');
+    const baseMsg = document.getElementById('base-msg');
+
+    document.getElementById('git-hash').textContent = GIT_HASH;
+    document.getElementById('cid').textContent = CID;
+    document.getElementById('tx-hash').textContent = TX_HASH;
+    document.getElementById('git-commit-link').href = COMMIT_URL;
+    document.getElementById('git-file-link').href = FILE_URL;
+    document.getElementById('ipfs-link').href = IPFS_URL;
+    document.getElementById('base-link').href = BASE_URL;
+
+    const logs = [];
+    function append(msg) {
+      const line = `[${new Date().toISOString()}] ${msg}`;
+      logs.push(line);
+      logEl.textContent = logs.join('\n');
+    }
+    function setLed(el, color) {
+      el.className = `led ${color}`;
+    }
+
+    async function fetchText(url) {
+      const res = await fetch(url, { cache: 'no-store' });
+      if (!res.ok) throw new Error(`${url} -> HTTP ${res.status}`);
+      return await res.text();
+    }
+
+    async function run() {
+      append('Starting proof surface checks.');
+      let gitOk = false;
+      let ipfsOk = false;
+      let baseOk = false;
+
+      try {
+        const raw = await fetchText(RAW_URL);
+        append('Fetched Git raw receipt content.');
+        const json = JSON.parse(raw);
+        const backLinkOk = json.previous
+          && json.previous.commit_hash === PREV_HASH
+          && json.previous.artifact_sha256 === PREV_ARTIFACT_SHA;
+        const cidOk = json.new_surface && json.new_surface.cid === CID;
+        const txOk = json.new_surface && json.new_surface.tx_hash === TX_HASH;
+        gitOk = backLinkOk && cidOk && txOk;
+        if (gitOk) {
+          setLed(gitLed, 'green');
+          gitMsg.textContent = 'Git receipt fetched and contents match expected backlink, CID, and tx hash.';
+          append('Git check: PASS.');
+        } else {
+          setLed(gitLed, 'red');
+          gitMsg.textContent = 'Git receipt fetched, but expected backlink/CID/tx fields did not all match.';
+          append('Git check: FAIL.');
+        }
+      } catch (e) {
+        setLed(gitLed, 'red');
+        gitMsg.textContent = 'Could not fetch or parse the Git receipt.';
+        append(`Git check error: ${e.message}`);
+      }
+
+      try {
+        const ipfsRaw = await fetchText(IPFS_URL);
+        append('Fetched IPFS receipt content.');
+        const ipfsJson = JSON.parse(ipfsRaw);
+        ipfsOk = ipfsJson.previous
+          && ipfsJson.previous.commit_hash === PREV_HASH
+          && ipfsJson.previous.artifact_sha256 === PREV_ARTIFACT_SHA;
+        if (ipfsOk) {
+          setLed(ipfsLed, 'green');
+          ipfsMsg.textContent = 'IPFS content resolved and the backlink to Receipt #001 matches.';
+          append('IPFS check: PASS.');
+        } else {
+          setLed(ipfsLed, 'red');
+          ipfsMsg.textContent = 'IPFS content resolved, but backlink fields did not match expected values.';
+          append('IPFS check: FAIL.');
+        }
+      } catch (e) {
+        setLed(ipfsLed, 'red');
+        ipfsMsg.textContent = 'Could not fetch or parse the IPFS receipt from the public gateway.';
+        append(`IPFS check error: ${e.message}`);
+      }
+
+      try {
+        const res = await fetch(BASE_URL, { method: 'HEAD', cache: 'no-store' });
+        baseOk = res.ok;
+        if (baseOk) {
+          setLed(baseLed, 'green');
+          baseMsg.textContent = 'Base transaction has a live public explorer surface and matches the tx hash recorded in Receipt #002.';
+          append('Base check: PASS (explorer surface reachable).');
+        } else {
+          setLed(baseLed, 'red');
+          baseMsg.textContent = 'Base explorer did not return an OK response for the tx surface.';
+          append(`Base check: FAIL (HTTP ${res.status}).`);
+        }
+      } catch (e) {
+        setLed(baseLed, 'red');
+        baseMsg.textContent = 'Could not reach the Base explorer surface from the browser.';
+        append(`Base check error: ${e.message}`);
+      }
+
+      if (gitOk && ipfsOk && baseOk) {
+        overall.className = 'status-banner ok';
+        overall.textContent = 'PROOF OF EXISTENCE: LIVE & ANCHORED';
+        append('Overall status: GREEN.');
+      } else if (gitOk || ipfsOk || baseOk) {
+        overall.className = 'status-banner warn';
+        overall.textContent = 'PARTIAL PROOF: ONE OR MORE SURFACES NOT FULLY VERIFIED';
+        append('Overall status: AMBER.');
+      } else {
+        overall.className = 'status-banner bad';
+        overall.textContent = 'PROOF CHECK FAILED: SURFACES UNAVAILABLE OR MISMATCHED';
+        append('Overall status: RED.');
+      }
+    }
+
+    run();
+  </script>
+</body>
+</html>
